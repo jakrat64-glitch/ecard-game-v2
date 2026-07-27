@@ -2,5 +2,8 @@
 builder = "DOCKERFILE"
 dockerfilePath = "Dockerfile"
 
+[build.args]
+NEXT_PUBLIC_SOCKET_URL = "https://ecard-game-server-production.up.railway.app"
+
 [deploy]
 restartPolicyType = "ON_FAILURE"

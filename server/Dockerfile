@@ -22,9 +22,8 @@ RUN npm ci --omit=dev
 
 COPY --from=builder /app/dist ./dist
 
-# Railway (and most PaaS providers) inject PORT at runtime — the app reads
-# process.env.PORT itself (see src/index.ts), so no hardcoded EXPOSE value
-# should be relied upon for actual routing, but we document the default here.
-EXPOSE 4000
+# Railway injects PORT at runtime (8080 in practice) and detects the port the
+# process actually listens on, so EXPOSE does not drive routing here. The app
+# reads process.env.PORT and binds 0.0.0.0 — see src/index.ts.
 
 CMD ["node", "dist/index.js"]
