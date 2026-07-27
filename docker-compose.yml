@@ -1,0 +1,27 @@
+services:
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      - PORT=4000
+      - CLIENT_ORIGIN=http://localhost:3000
+    restart: unless-stopped
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        # Baked into the client bundle at build time — see the note in
+        # client/Dockerfile. When running via docker-compose on your own
+        # machine, http://localhost:4000 is correct because your browser
+        # (not the client container) is what connects to the server.
+        NEXT_PUBLIC_SOCKET_URL: http://localhost:4000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - server
+    restart: unless-stopped
